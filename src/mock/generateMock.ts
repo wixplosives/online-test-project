@@ -1,5 +1,5 @@
 import * as fs from 'node:fs';
-import * as path from 'path';
+import * as path from 'node:path';
 
 function readPackageLock(filePath: string): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -18,37 +18,17 @@ function readPackageLock(filePath: string): Promise<any> {
     });
 }
 
-function getPackagesWithVersions(lockFile: any): Record<string, string> {
-    const packages: Record<string, string> = {};
+export async function getPackagesWithVersions(): Promise<string[]> {
+    const packages: string[] = [];
+    const packageFile = await readPackageLock(path.resolve('package.json'));
+    // console.log(packageFile);
 
-    function processDependencies(dependencies: any) {
-        for (const [packageName, packageInfo] of Object.entries(dependencies)) {
-            packages[packageName] = packageInfo.version;
-            if (packageInfo.dependencies) {
-                processDependencies(packageInfo.dependencies);
-            }
-        }
+    for (const field of Object.values(packageFile).filter((field) => field !== 'dependencies')) {
+        console.log(field);
     }
 
-    processDependencies(lockFile.dependencies);
+    packages.shift(); // remove first package which is the project itself
 
+    fs.writeFileSync('./mock.txt', Array(packages).toString());
     return packages;
 }
-
-async function main() {
-    const lockFilePath = path.resolve(__dirname, 'path/to/your/package-lock.json');
-
-    try {
-        const lockFile = await readPackageLock(lockFilePath);
-        const packagesWithVersions = getPackagesWithVersions(lockFile);
-
-        console.log('Packages and their versions:');
-        for (const [packageName, version] of Object.entries(packagesWithVersions)) {
-            console.log(`${packageName}: ${version}`);
-        }
-    } catch (err) {
-        console.error('Error reading or parsing package-lock.json:', err);
-    }
-}
-
-main();
