@@ -37,25 +37,60 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var commander_1 = require("commander");
+var fs = require("fs");
 var program = new commander_1.Command();
-program
-    .command('generate-mock-packages')
-    .option('--out-dir <outDir>')
-    .action(function (_a) {
-    var outDir = _a.outDir;
-    return __awaiter(void 0, void 0, void 0, function () {
-        var getPackagesWithVersions, data;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0: return [4 /*yield*/, Promise.resolve().then(function () { return require('../mock/generateMock'); })];
-                case 1:
-                    getPackagesWithVersions = (_b.sent()).getPackagesWithVersions;
-                    return [4 /*yield*/, getPackagesWithVersions()];
-                case 2:
-                    data = _b.sent();
-                    return [2 /*return*/];
-            }
-        });
+program.command('generate-mock-packages').action(function () { return __awaiter(void 0, void 0, void 0, function () {
+    var extractUrlsFromLockFile, urls, _i, urls_1, url, parts, fileName, response, reader, chunks, _a, done, value, buffer, error_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0: return [4 /*yield*/, Promise.resolve().then(function () { return require('../mock/generateMock'); })];
+            case 1:
+                extractUrlsFromLockFile = (_b.sent()).extractUrlsFromLockFile;
+                urls = extractUrlsFromLockFile('package-lock.json');
+                _i = 0, urls_1 = urls;
+                _b.label = 2;
+            case 2:
+                if (!(_i < urls_1.length)) return [3 /*break*/, 10];
+                url = urls_1[_i];
+                parts = url.split('/');
+                fileName = parts.slice(-2, -1);
+                _b.label = 3;
+            case 3:
+                _b.trys.push([3, 8, , 9]);
+                return [4 /*yield*/, fetch(url)];
+            case 4:
+                response = _b.sent();
+                if (!response.ok) {
+                    console.error("Failed to fetch data from ".concat(url));
+                    return [3 /*break*/, 9];
+                }
+                reader = response.body.getReader();
+                chunks = [];
+                _b.label = 5;
+            case 5:
+                if (!true) return [3 /*break*/, 7];
+                return [4 /*yield*/, reader.read()];
+            case 6:
+                _a = _b.sent(), done = _a.done, value = _a.value;
+                if (done) {
+                    return [3 /*break*/, 7];
+                }
+                chunks.push(value);
+                return [3 /*break*/, 5];
+            case 7:
+                buffer = Buffer.concat(chunks);
+                fs.writeFileSync("./src/mock/".concat(fileName), buffer);
+                console.log("Data from ".concat(url, " written to ").concat(fileName));
+                return [3 /*break*/, 9];
+            case 8:
+                error_1 = _b.sent();
+                console.error("Error fetching data from ".concat(url, ":"), error_1);
+                return [3 /*break*/, 9];
+            case 9:
+                _i++;
+                return [3 /*break*/, 2];
+            case 10: return [2 /*return*/];
+        }
     });
-});
+}); });
 program.parse(process.argv);

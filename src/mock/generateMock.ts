@@ -1,34 +1,48 @@
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import * as fs from 'fs';
 
-function readPackageLock(filePath: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-        fs.readFile(filePath, 'utf8', (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                try {
-                    const lockFile = JSON.parse(data);
-                    resolve(lockFile);
-                } catch (jsonErr) {
-                    reject(jsonErr);
-                }
-            }
-        });
-    });
+interface Dependencies {
+    [modulePath: string]: {
+        version?: string;
+        resolved?: string;
+    };
 }
 
-export async function getPackagesWithVersions(): Promise<string[]> {
-    const packages: string[] = [];
-    const packageFile = await readPackageLock(path.resolve('package.json'));
-    // console.log(packageFile);
+export function extractUrlsFromLockFile(lockFilePath: string): string[] {
+    const lockFileContent = fs.readFileSync(lockFilePath, 'utf8');
+    const dependencies = getDependencies(lockFileContent);
 
-    for (const field of Object.values(packageFile).filter((field) => field !== 'dependencies')) {
-        console.log(field);
+    const apiUrl = 'https://online.codux.com/_api/nnpm-server/v1/nnpm/cjs/';
+
+    const urls = Object.entries(dependencies)
+        .filter(([modulePath, data]) => data.version !== undefined || data.resolved !== undefined)
+        .map(([modulePath, data]) => {
+            const [packageName, version] = parseModulePath(modulePath, data.resolved, dependencies);
+            return `${apiUrl}${packageName}/${version}.json`;
+        });
+
+    return urls;
+}
+
+function getDependencies(lockFileContent: string): Dependencies {
+    const lockFile = JSON.parse(lockFileContent);
+    return lockFile.dependencies || lockFile.packages || {};
+}
+
+function parseModulePath(
+    modulePath: string,
+    resolved?: string,
+    dependencies?: Dependencies
+): [string, string] {
+    const NODE_MODULES = 'node_modules';
+    const indexOfNodeModules = modulePath.lastIndexOf(NODE_MODULES);
+    const packageName = modulePath.slice(indexOfNodeModules + NODE_MODULES.length);
+
+    if (resolved) {
+        const versionMatch = resolved.match(/\/([0-9]+\.[0-9]+\.[0-9]+)/);
+        if (versionMatch) {
+            return [packageName, versionMatch[1]];
+        }
     }
 
-    packages.shift(); // remove first package which is the project itself
-
-    fs.writeFileSync('./mock.txt', Array(packages).toString());
-    return packages;
+    return [packageName, (dependencies && dependencies[modulePath]?.version) || 'UNKNOWN'];
 }
