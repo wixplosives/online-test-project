@@ -3,7 +3,7 @@ import * as fs from 'fs';
 
 const program = new Command();
 
-program.command('generate-mock-packages').action(async () => {
+program.command('generate-mock-files').action(async () => {
     const { extractUrlsFromLockFile } = await import('../mock/generateMock');
     const urls = extractUrlsFromLockFile('package-lock.json');
 
@@ -33,7 +33,7 @@ program.command('generate-mock-packages').action(async () => {
 
             const buffer = Buffer.concat(chunks);
 
-            fs.writeFileSync(`./src/mock/${fileName}.json`, buffer);
+            fs.writeFileSync(`./src/mock/files/${fileName}.json`, buffer);
             console.log(`Data from ${url} written to ${fileName}`);
         } catch (error) {
             console.error(`Error fetching data from ${url}:`, error);

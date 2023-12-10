@@ -1,0 +1,15 @@
+{
+  "packageName": "read-cache",
+  "packageVersion": "1.0.0",
+  "request": "read-cache",
+  "resolved": "index.js",
+  "files": {
+    "index.js": "var fs = require('fs');\r\nvar path = require('path');\r\nvar pify = require('pify');\r\n\r\nvar stat = pify(fs.stat);\r\nvar readFile = pify(fs.readFile);\r\nvar resolve = path.resolve;\r\n\r\nvar cache = Object.create(null);\r\n\r\nfunction convert(content, encoding) {\r\n\tif (Buffer.isEncoding(encoding)) {\r\n\t\treturn content.toString(encoding);\r\n\t}\r\n\treturn content;\r\n}\r\n\r\nmodule.exports = function (path, encoding) {\r\n\tpath = resolve(path);\r\n\r\n\treturn stat(path).then(function (stats) {\r\n\t\tvar item = cache[path];\r\n\r\n\t\tif (item && item.mtime.getTime() === stats.mtime.getTime()) {\r\n\t\t\treturn convert(item.content, encoding);\r\n\t\t}\r\n\r\n\t\treturn readFile(path).then(function (data) {\r\n\t\t\tcache[path] = {\r\n\t\t\t\tmtime: stats.mtime,\r\n\t\t\t\tcontent: data\r\n\t\t\t};\r\n\r\n\t\t\treturn convert(data, encoding);\r\n\t\t});\r\n\t}).catch(function (err) {\r\n\t\tcache[path] = null;\r\n\t\treturn Promise.reject(err);\r\n\t});\r\n};\r\n\r\nmodule.exports.sync = function (path, encoding) {\r\n\tpath = resolve(path);\r\n\r\n\ttry {\r\n\t\tvar stats = fs.statSync(path);\r\n\t\tvar item = cache[path];\r\n\r\n\t\tif (item && item.mtime.getTime() === stats.mtime.getTime()) {\r\n\t\t\treturn convert(item.content, encoding);\r\n\t\t}\r\n\r\n\t\tvar data = fs.readFileSync(path);\r\n\r\n\t\tcache[path] = {\r\n\t\t\tmtime: stats.mtime,\r\n\t\t\tcontent: data\r\n\t\t};\r\n\r\n\t\treturn convert(data, encoding);\r\n\t} catch (err) {\r\n\t\tcache[path] = null;\r\n\t\tthrow err;\r\n\t}\r\n\r\n};\r\n\r\nmodule.exports.get = function (path, encoding) {\r\n\tpath = resolve(path);\r\n\tif (cache[path]) {\r\n\t\treturn convert(cache[path].content, encoding);\r\n\t}\r\n\treturn null;\r\n};\r\n\r\nmodule.exports.clear = function () {\r\n\tcache = Object.create(null);\r\n};\r\n",
+    "package.json": "{\n  \"name\": \"read-cache\",\n  \"version\": \"1.0.0\",\n  \"description\": \"Reads and caches the entire contents of a file until it is modified\",\n  \"files\": [\n    \"index.js\"\n  ],\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"test\": \"ava\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/TrySound/read-cache.git\"\n  },\n  \"keywords\": [\n    \"fs\",\n    \"read\",\n    \"cache\"\n  ],\n  \"author\": \"Bogdan Chadkin <trysound@yandex.ru>\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/TrySound/read-cache/issues\"\n  },\n  \"homepage\": \"https://github.com/TrySound/read-cache#readme\",\n  \"devDependencies\": {\n    \"ava\": \"^0.9.1\",\n    \"del\": \"^2.2.0\"\n  },\n  \"dependencies\": {\n    \"pify\": \"^2.3.0\"\n  }\n}\n"
+  },
+  "externals": [
+    "fs",
+    "path",
+    "pify"
+  ]
+}
