@@ -11,7 +11,7 @@ export function extractUrlsFromLockFile(lockFilePath: string): string[] {
     const lockFileContent = fs.readFileSync(lockFilePath, 'utf8');
     const dependencies = getDependencies(lockFileContent);
 
-    const apiUrl = 'https://online.codux.com/_api/nnpm-server/v1/nnpm/cjs/';
+    const apiUrl = 'https://online.codux.com/_api/nnpm-server/v1/nnpm/cjs';
 
     const urls = Object.entries(dependencies)
         .filter(([modulePath, data]) => data.version !== undefined || data.resolved !== undefined)
