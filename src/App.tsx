@@ -11,19 +11,13 @@ function App() {
     return (
         <div className={styles.App}>
             <div>
-                <a href="https://vitejs.dev" target="_blank" >
-                    <ViteLogo
-                        height="6em"
-                        width="6em"
-                        title="Vite logo"
-                        className={`${styles.logo}`}
-                    />
+                <a href="https://vitejs.dev" target="_blank">
+                    <ViteLogo height="6em" width="6em" className={styles.logo} />
                 </a>
                 <a href="https://reactjs.org" target="_blank">
                     <ReactLogo
                         height="6em"
                         width="6em"
-                        title="React logo"
                         className={`${styles.logo} ${styles.react}`}
                     />
                 </a>
@@ -31,7 +25,6 @@ function App() {
                     <TypescriptLogo
                         height="6em"
                         width="6em"
-                        title="Typescript logo"
                         className={`${styles.logo} ${styles.ts}`}
                     />
                 </a>
@@ -39,7 +32,6 @@ function App() {
                     <ScssLogo
                         height="6em"
                         width="6em"
-                        title="SCSS logo"
                         className={`${styles.logo} ${styles.scss}`}
                     />
                 </a>

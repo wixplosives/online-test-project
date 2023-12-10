@@ -12,10 +12,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "target": "es2020",
+    "target": "ESNext",
     "module": "commonjs",
     "outDir": "dist",
-    "rootDir": "./",
+    "rootDir": "./src",
     "strict": true
   },
   "watchOptions": {
@@ -26,5 +26,6 @@
     "excludeDirectories": ["**/node_modules", "_build"],
     "excludeFiles": ["build/fileWhichChangesOften.ts"]
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/custom.d.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
