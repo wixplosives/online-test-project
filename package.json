@@ -10,7 +10,6 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@wixc3/nnpm": "^7.2.1",
     "commander": "^11.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
