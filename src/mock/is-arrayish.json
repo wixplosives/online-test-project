@@ -1,0 +1,11 @@
+{
+  "packageName": "is-arrayish",
+  "packageVersion": "0.2.1",
+  "request": "is-arrayish",
+  "resolved": "index.js",
+  "files": {
+    "index.js": "'use strict';\n\nmodule.exports = function isArrayish(obj) {\n\tif (!obj) {\n\t\treturn false;\n\t}\n\n\treturn obj instanceof Array || Array.isArray(obj) ||\n\t\t(obj.length >= 0 && obj.splice instanceof Function);\n};\n",
+    "package.json": "{\n  \"name\": \"is-arrayish\",\n  \"description\": \"Determines if an object can be used as an array\",\n  \"version\": \"0.2.1\",\n  \"author\": \"Qix (http://github.com/qix-)\",\n  \"keywords\": [\n    \"is\",\n    \"array\",\n    \"duck\",\n    \"type\",\n    \"arrayish\",\n    \"similar\",\n    \"proto\",\n    \"prototype\",\n    \"type\"\n  ],\n  \"license\": \"MIT\",\n  \"scripts\": {\n    \"pretest\": \"xo\",\n    \"test\": \"mocha --compilers coffee:coffee-script/register\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/qix-/node-is-arrayish.git\"\n  },\n  \"devDependencies\": {\n    \"coffee-script\": \"^1.9.3\",\n    \"coveralls\": \"^2.11.2\",\n    \"istanbul\": \"^0.3.17\",\n    \"mocha\": \"^2.2.5\",\n    \"should\": \"^7.0.1\",\n    \"xo\": \"^0.6.1\"\n  }\n}\n"
+  },
+  "externals": []
+}

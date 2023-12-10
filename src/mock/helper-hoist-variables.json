@@ -1,0 +1,13 @@
+{
+  "packageName": "@babel/helper-hoist-variables",
+  "packageVersion": "7.22.5",
+  "request": "@babel/helper-hoist-variables",
+  "resolved": "lib/index.js",
+  "files": {
+    "lib/index.js": "\"use strict\";\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = hoistVariables;\nvar _t = require(\"@babel/types\");\nconst {\n  assignmentExpression,\n  expressionStatement,\n  identifier\n} = _t;\nconst visitor = {\n  Scope(path, state) {\n    if (state.kind === \"let\") path.skip();\n  },\n  FunctionParent(path) {\n    path.skip();\n  },\n  VariableDeclaration(path, state) {\n    if (state.kind && path.node.kind !== state.kind) return;\n    const nodes = [];\n    const declarations = path.get(\"declarations\");\n    let firstId;\n    for (const declar of declarations) {\n      firstId = declar.node.id;\n      if (declar.node.init) {\n        nodes.push(expressionStatement(assignmentExpression(\"=\", declar.node.id, declar.node.init)));\n      }\n      for (const name of Object.keys(declar.getBindingIdentifiers())) {\n        state.emit(identifier(name), name, declar.node.init !== null);\n      }\n    }\n    if (path.parentPath.isFor({\n      left: path.node\n    })) {\n      path.replaceWith(firstId);\n    } else {\n      path.replaceWithMultiple(nodes);\n    }\n  }\n};\nfunction hoistVariables(path, emit, kind = \"var\") {\n  path.traverse(visitor, {\n    kind,\n    emit\n  });\n}\n\n//# sourceMappingURL=index.js.map\n",
+    "package.json": "{\n  \"name\": \"@babel/helper-hoist-variables\",\n  \"version\": \"7.22.5\",\n  \"description\": \"Helper function to hoist variables\",\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/babel/babel.git\",\n    \"directory\": \"packages/babel-helper-hoist-variables\"\n  },\n  \"homepage\": \"https://babel.dev/docs/en/next/babel-helper-hoist-variables\",\n  \"license\": \"MIT\",\n  \"publishConfig\": {\n    \"access\": \"public\"\n  },\n  \"main\": \"./lib/index.js\",\n  \"dependencies\": {\n    \"@babel/types\": \"^7.22.5\"\n  },\n  \"TODO\": \"The @babel/traverse dependency is only needed for the NodePath TS type. We can consider exporting it from @babel/core.\",\n  \"devDependencies\": {\n    \"@babel/traverse\": \"^7.22.5\"\n  },\n  \"engines\": {\n    \"node\": \">=6.9.0\"\n  },\n  \"author\": \"The Babel Team (https://babel.dev/team)\",\n  \"type\": \"commonjs\"\n}"
+  },
+  "externals": [
+    "@babel/types"
+  ]
+}

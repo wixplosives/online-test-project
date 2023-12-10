@@ -1,0 +1,11 @@
+{
+  "packageName": "utils-merge",
+  "packageVersion": "1.0.1",
+  "request": "utils-merge",
+  "resolved": "index.js",
+  "files": {
+    "index.js": "/**\n * Merge object b with object a.\n *\n *     var a = { foo: 'bar' }\n *       , b = { bar: 'baz' };\n *\n *     merge(a, b);\n *     // => { foo: 'bar', bar: 'baz' }\n *\n * @param {Object} a\n * @param {Object} b\n * @return {Object}\n * @api public\n */\n\nexports = module.exports = function(a, b){\n  if (a && b) {\n    for (var key in b) {\n      a[key] = b[key];\n    }\n  }\n  return a;\n};\n",
+    "package.json": "{\n  \"name\": \"utils-merge\",\n  \"version\": \"1.0.1\",\n  \"description\": \"merge() utility function\",\n  \"keywords\": [\n    \"util\"\n  ],\n  \"author\": {\n    \"name\": \"Jared Hanson\",\n    \"email\": \"jaredhanson@gmail.com\",\n    \"url\": \"http://www.jaredhanson.net/\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git://github.com/jaredhanson/utils-merge.git\"\n  },\n  \"bugs\": {\n    \"url\": \"http://github.com/jaredhanson/utils-merge/issues\"\n  },\n  \"license\": \"MIT\",\n  \"licenses\": [\n    {\n      \"type\": \"MIT\",\n      \"url\": \"http://opensource.org/licenses/MIT\"\n    }\n  ],\n  \"main\": \"./index\",\n  \"dependencies\": {},\n  \"devDependencies\": {\n    \"make-node\": \"0.3.x\",\n    \"mocha\": \"1.x.x\",\n    \"chai\": \"1.x.x\"\n  },\n  \"engines\": {\n    \"node\": \">= 0.4.0\"\n  },\n  \"scripts\": {\n    \"test\": \"node_modules/.bin/mocha --reporter spec --require test/bootstrap/node test/*.test.js\"\n  }\n}\n"
+  },
+  "externals": []
+}

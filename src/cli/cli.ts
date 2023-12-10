@@ -33,7 +33,7 @@ program.command('generate-mock-packages').action(async () => {
 
             const buffer = Buffer.concat(chunks);
 
-            fs.writeFileSync(`./src/mock/${fileName}`, buffer);
+            fs.writeFileSync(`./src/mock/${fileName}.json`, buffer);
             console.log(`Data from ${url} written to ${fileName}`);
         } catch (error) {
             console.error(`Error fetching data from ${url}:`, error);

@@ -1,0 +1,11 @@
+{
+  "packageName": "@file-services/types",
+  "packageVersion": "8.3.3",
+  "request": "@file-services/types",
+  "resolved": "dist/fs-types.mjs",
+  "files": {
+    "dist/fs-types.mjs": "\"use strict\";\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.FileSystemConstants = void 0;\n// packages/types/src/common-fs-types.ts\nvar FileSystemConstants = /* @__PURE__ */ ((FileSystemConstants2) => {\n    FileSystemConstants2[FileSystemConstants2[\"COPYFILE_EXCL\"] = 1] = \"COPYFILE_EXCL\";\n    return FileSystemConstants2;\n})(FileSystemConstants || {});\nexports.FileSystemConstants = FileSystemConstants;\n//# sourceMappingURL=fs-types.mjs.map\n",
+    "package.json": "{\n  \"name\": \"@file-services/types\",\n  \"description\": \"Common file system interfaces\",\n  \"version\": \"8.3.3\",\n  \"main\": \"./dist/fs-types.cjs\",\n  \"types\": \"./dist/index.d.ts\",\n  \"exports\": {\n    \".\": {\n      \"types\": \"./dist/index.d.ts\",\n      \"import\": \"./dist/fs-types.mjs\",\n      \"require\": \"./dist/fs-types.cjs\"\n    },\n    \"./package.json\": \"./package.json\"\n  },\n  \"files\": [\n    \"dist\",\n    \"!dist/test\",\n    \"src\",\n    \"!*/tsconfig.{json,tsbuildinfo}\"\n  ],\n  \"license\": \"MIT\",\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/wixplosives/file-services.git\",\n    \"directory\": \"packages/types\"\n  },\n  \"homepage\": \"https://github.com/wixplosives/file-services\",\n  \"publishConfig\": {\n    \"access\": \"public\"\n  },\n  \"sideEffects\": false\n}\n"
+  },
+  "externals": []
+}

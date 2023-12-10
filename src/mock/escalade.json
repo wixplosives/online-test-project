@@ -1,0 +1,15 @@
+{
+  "packageName": "escalade",
+  "packageVersion": "3.1.1",
+  "request": "escalade",
+  "resolved": "dist/index.mjs",
+  "files": {
+    "dist/index.mjs": "\"use strict\";\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst path_1 = require(\"path\");\nconst fs_1 = require(\"fs\");\nconst util_1 = require(\"util\");\nconst toStats = (0, util_1.promisify)(fs_1.stat);\nconst toRead = (0, util_1.promisify)(fs_1.readdir);\nasync function default_1(start, callback) {\n    let dir = (0, path_1.resolve)('.', start);\n    let tmp, stats = await toStats(dir);\n    if (!stats.isDirectory()) {\n        dir = (0, path_1.dirname)(dir);\n    }\n    while (true) {\n        tmp = await callback(dir, await toRead(dir));\n        if (tmp)\n            return (0, path_1.resolve)(dir, tmp);\n        dir = (0, path_1.dirname)(tmp = dir);\n        if (tmp === dir)\n            break;\n    }\n}\nexports.default = default_1;\n",
+    "package.json": "{\n  \"name\": \"escalade\",\n  \"version\": \"3.1.1\",\n  \"repository\": \"lukeed/escalade\",\n  \"description\": \"A tiny (183B to 210B) and fast utility to ascend parent directories\",\n  \"module\": \"dist/index.mjs\",\n  \"main\": \"dist/index.js\",\n  \"types\": \"index.d.ts\",\n  \"license\": \"MIT\",\n  \"author\": {\n    \"name\": \"Luke Edwards\",\n    \"email\": \"luke.edwards05@gmail.com\",\n    \"url\": \"https://lukeed.com\"\n  },\n  \"exports\": {\n    \".\": [\n      {\n        \"import\": \"./dist/index.mjs\",\n        \"require\": \"./dist/index.js\"\n      },\n      \"./dist/index.js\"\n    ],\n    \"./sync\": [\n      {\n        \"import\": \"./sync/index.mjs\",\n        \"require\": \"./sync/index.js\"\n      },\n      \"./sync/index.js\"\n    ]\n  },\n  \"files\": [\n    \"*.d.ts\",\n    \"dist\",\n    \"sync\"\n  ],\n  \"modes\": {\n    \"sync\": \"src/sync.js\",\n    \"default\": \"src/async.js\"\n  },\n  \"engines\": {\n    \"node\": \">=6\"\n  },\n  \"scripts\": {\n    \"build\": \"bundt\",\n    \"pretest\": \"npm run build\",\n    \"test\": \"uvu -r esm test -i fixtures\"\n  },\n  \"keywords\": [\n    \"find\",\n    \"parent\",\n    \"parents\",\n    \"directory\",\n    \"search\",\n    \"walk\"\n  ],\n  \"devDependencies\": {\n    \"bundt\": \"1.1.1\",\n    \"esm\": \"3.2.25\",\n    \"uvu\": \"0.3.3\"\n  }\n}\n"
+  },
+  "externals": [
+    "path",
+    "fs",
+    "util"
+  ]
+}

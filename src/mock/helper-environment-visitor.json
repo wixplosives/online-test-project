@@ -1,0 +1,11 @@
+{
+  "packageName": "@babel/helper-environment-visitor",
+  "packageVersion": "7.22.20",
+  "request": "@babel/helper-environment-visitor",
+  "resolved": "lib/index.js",
+  "files": {
+    "lib/index.js": "\"use strict\";\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = void 0;\nexports.requeueComputedKeyAndDecorators = requeueComputedKeyAndDecorators;\n{\n  exports.skipAllButComputedKey = function skipAllButComputedKey(path) {\n    path.skip();\n    if (path.node.computed) {\n      path.context.maybeQueue(path.get(\"key\"));\n    }\n  };\n}\nfunction requeueComputedKeyAndDecorators(path) {\n  const {\n    context,\n    node\n  } = path;\n  if (node.computed) {\n    context.maybeQueue(path.get(\"key\"));\n  }\n  if (node.decorators) {\n    for (const decorator of path.get(\"decorators\")) {\n      context.maybeQueue(decorator);\n    }\n  }\n}\nconst visitor = {\n  FunctionParent(path) {\n    if (path.isArrowFunctionExpression()) {\n      return;\n    } else {\n      path.skip();\n      if (path.isMethod()) {\n        requeueComputedKeyAndDecorators(path);\n      }\n    }\n  },\n  Property(path) {\n    if (path.isObjectProperty()) {\n      return;\n    }\n    path.skip();\n    requeueComputedKeyAndDecorators(path);\n  }\n};\nvar _default = visitor;\nexports.default = _default;\n\n//# sourceMappingURL=index.js.map\n",
+    "package.json": "{\n  \"name\": \"@babel/helper-environment-visitor\",\n  \"version\": \"7.22.20\",\n  \"description\": \"Helper visitor to only visit nodes in the current 'this' context\",\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/babel/babel.git\",\n    \"directory\": \"packages/babel-helper-environment-visitor\"\n  },\n  \"homepage\": \"https://babel.dev/docs/en/next/babel-helper-environment-visitor\",\n  \"license\": \"MIT\",\n  \"publishConfig\": {\n    \"access\": \"public\"\n  },\n  \"main\": \"./lib/index.js\",\n  \"exports\": {\n    \".\": \"./lib/index.js\",\n    \"./package.json\": \"./package.json\"\n  },\n  \"devDependencies\": {\n    \"@babel/traverse\": \"^7.22.20\",\n    \"@babel/types\": \"^7.22.19\"\n  },\n  \"engines\": {\n    \"node\": \">=6.9.0\"\n  },\n  \"author\": \"The Babel Team (https://babel.dev/team)\",\n  \"type\": \"commonjs\"\n}"
+  },
+  "externals": []
+}

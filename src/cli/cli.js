@@ -79,7 +79,7 @@ program.command('generate-mock-packages').action(function () { return __awaiter(
                 return [3 /*break*/, 5];
             case 7:
                 buffer = Buffer.concat(chunks);
-                fs.writeFileSync("./src/mock/".concat(fileName), buffer);
+                fs.writeFileSync("./src/mock/".concat(fileName, ".json"), buffer);
                 console.log("Data from ".concat(url, " written to ").concat(fileName));
                 return [3 /*break*/, 9];
             case 8:
