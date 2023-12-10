@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "watch": "tsc --watch"
   },
   "dependencies": {
     "@wixc3/nnpm": "^7.2.1",
@@ -22,7 +23,8 @@
     "@wixc3/react-board": "^2.3.0",
     "sass": "^1.69.5",
     "tailwindcss": "^3.3.5",
-    "typescript": "^5.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
     "vite": "^4.5.0",
     "vite-plugin-svgr": "^3.2.0"
   }
