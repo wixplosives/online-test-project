@@ -12,7 +12,7 @@ program.command('generate-mock-files').action(async () => {
     execSync(`rm -rf ${MOCK_FILES_PATH}/*`);
 
     for (const url of urls) {
-        const fileName = url.slice(url.indexOf('cjs') + 5).replaceAll('/', '-');
+        const fileName = url.slice(url.indexOf('cjs') + 4).replaceAll('/', '-');
 
         try {
             const response = await fetch(url);
