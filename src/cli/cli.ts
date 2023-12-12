@@ -36,7 +36,7 @@ program.command('generate-mock-files').action(async () => {
 
             const buffer = Buffer.concat(chunks);
 
-            fs.writeFileSync(`${MOCK_FILES_PATH}/${fileName}.json`, buffer);
+            fs.writeFileSync(`${MOCK_FILES_PATH}/${fileName}`, buffer);
             console.log(`Data from ${url} written to ${fileName}`);
         } catch (error) {
             console.error(`Error fetching data from ${url}:`, error);
